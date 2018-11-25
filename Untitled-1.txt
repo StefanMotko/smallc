@@ -1,0 +1,16 @@
+PROGRAM
+    - BEGIN
+    - STMT_LIST
+        - STMT_LIST2
+        - STMT
+            - WRITE (
+            - EXPR_LIST
+                - EXPR
+                    - FACTOR
+                        - IDENT
+                            - LETTER
+                            - DIGLET
+                    - EXPR2
+                - EXPR_LIST2
+            - );
+    - END

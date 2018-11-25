@@ -1,0 +1,1 @@
+BEGIN write ( a ) ; END
