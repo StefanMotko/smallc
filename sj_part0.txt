@@ -1,0 +1,131 @@
+program ::= 'BEGIN' statement_list 'END' .
+statement_list ::= statement {statement} .
+statement ::= ident ':=' expression ';' .
+statement ::= 'READ' '(' id_list ')' ';' .
+statement ::= 'WRITE' '(' expr_list ')' ';' .
+statement ::= 'IF' bexpr 'THEN' statement ['ELSE' statement] ';' .
+id_list ::= ident {',' ident} .
+expr_list ::= expression {',' expression} .
+expression ::= [expression op] factor .
+factor ::= '(' expression ')' .
+factor ::= ident | number .
+op ::= '+' | '-' .
+bexpr ::= [bexpr 'OR'] bterm .
+bterm ::= [bterm 'AND'] bfactor .
+bfactor ::= 'NOT' bfactor | '(' bexp ')' | 'TRUE' | 'FALSE' .
+ident ::= letter {letter | digit09}.
+number ::= [ '+' | '-' ] digit19 {digit09}.
+digit09 ::= 0 | .. | 9 .
+digit19 ::= 1 | .. | 9 .
+
+-------------------------------
+
+Program -> begin Statement_list end .
+Statement_list -> Statement {Statement} .
+Statement -> Ident is Expression ln .
+Statement -> read ( Id_list ) ln .
+Statement -> write ( Expr_list ) ln .
+Statement -> if Bexpr then Statement [else Statement] ln .
+Id_list -> Ident {co Ident} .
+Expr_list -> Expression {co Expression} .
+Expression -> [Expression Op] Factor .
+Factor -> ( Expression ) .
+Factor -> Ident | Number .
+Op -> pl | mi .
+Bexpr -> [Bexpr or] Bterm .
+Bterm -> [Bterm and] Bfactor .
+Bfactor -> not Bfactor | ( Bexpr ) | true | false .
+Ident -> Letter {Letter | Digit09}.
+Number -> [ pl | mi ] Digit19 {Digit09}.
+Digit09 -> 0 | 1 | 9 .
+Digit19 -> 1 | 9 .
+Letter -> a | b .
+
+bexp in Bfactor changed to bexpr (as intedned probably)
+letter to Letter as probably intended
+
+substitution:
+begin == 'BEGIN'
+end == 'END'
+is == ':='
+ln == ';'
+read == 'READ'
+write == WRITE
+if == 'IF'
+then == 'THEN'
+else == 'ELSE'
+co == ','
+or == 'OR'
+and == 'AND'
+not == 'NOT'
+true == 'TRUE'
+false == 'FALSE'
+pl == '+'
+mi == '-'
+1 | 9 == 1 | .. | 9
+a | b == whatever alphabet intended ie. a | .. | z
+
+-------------------------------
+
+Program -> begin Statement_list end .
+Statement_list -> Statement Statement_list | Statement .
+Statement -> Ident is Expression ln .
+Statement -> read ( Id_list ) ln .
+Statement -> write ( Expr_list ) ln .
+Statement -> if Bexpr then Statement else Statement ln | if Bexpr then Statement ln .
+Id_list -> Ident co Id_list | Ident.
+Expr_list -> Expression co Expr_list | Expression .
+Expression -> Expression Op Factor | Factor .
+Factor -> ( Expression ) .
+Factor -> Ident | Number .
+Op -> pl | mi .
+Bexpr -> Bexpr or Bterm | Bterm  .
+Bterm -> Bterm and Bfactor | Bfactor .
+Bfactor -> not Bfactor | ( Bexpr ) | true | false .
+Ident -> Letter LetDig.
+LetDig -> Letter LetDig | Digit09 LetDig | .
+Number -> pl Digit19 Digit09s | mi Digit19 Digit09s.
+Digit09s -> Digit09 Digit09s | .
+Digit09 -> 0 | 1 | 9 .
+Digit19 -> 1 | 9 .
+Letter -> a | b .
+
+fairly straight forward transformation from BNF
+
+-------------------------------
+
+Program -> begin Statement_list end .
+Statement_list -> Statement Statement_list2 .
+Statement_list2 -> Statement_list | .
+Statement -> Ident is Expression ln .
+Statement -> read ( Id_list ) ln .
+Statement -> write ( Expr_list ) ln .
+Statement -> if Bexpr then Statement Statement2 .
+Statement2 -> else Statement ln | ln .
+Id_list -> Ident Id_list2 .
+Id_list2 -> co Id_list | .
+Expr_list -> Expression Expr_list2 .
+Expr_list2 -> co Expr_list | .
+Expression -> Factor Expression2 .
+Expression2 -> Op Factor Expression2 | .
+Factor -> ( Expression ) .
+Factor -> Ident | Number .
+Op -> pl | mi .
+Bexpr -> Bterm Bexpr2 .
+Bexpr2 -> or Bterm Bexpr2 | .
+Bterm -> Bfactor Bterm2.
+Bterm2 -> and Bfactor Bterm2 | .
+Bfactor -> not Bfactor | ( Bexpr ) | true | false .
+Ident -> Letter LetDig.
+LetDig -> Letter LetDig | Digit09 LetDig | .
+Number -> pl Digit19 Digit09s | mi Digit19 Digit09s.
+Digit09s -> Digit09 Digit09s | .
+Digit09 -> 0 | 1 | 9 .
+Digit19 -> 1 | 9 .
+Letter -> a | b .
+
+factor 'Statement' in Statement_list
+faztor 'Ident' in Id_list
+factor 'if Bexpr then Statement'  in Statement
+factor 'Expression' in Expr_list
+remove imediate left recursion from Expression, Bexpr and Bterm
