@@ -283,5 +283,8 @@
             ]
         }
     },
-    "startingSymbol": "PROGRAM"
+    "startingSymbol": "PROGRAM",
+    "skipSymbols": [
+        "whitespace"
+    ]
 }
