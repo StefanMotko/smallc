@@ -46,14 +46,13 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
     var currentState = [ input ];
 
     tokensWithEscapes
-    // construct regex
-    .map(tokenType => Object.assign({ regex: new RegExp(`(${tokenType.pattern})`, 'g') }, tokenType ))
     .forEach(tokenType => {
 
         currentState = currentState.map(sequence => {
             if (typeof sequence == 'string') {
                 // replace with parsed out tokens
-                const parsedSequence = sequence.replace(tokenType.regex, `<${tokenType.name}:$1>`);
+                const parsedSequence = sequence.replace(new RegExp(`(${tokenType.pattern})`, 'g'), `<${tokenType.name}:$1>`);
+                console.log(parsedSequence);
                 return parsedSequence
                 // split on splits
                 .split(/><|>|</)
