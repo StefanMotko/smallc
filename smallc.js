@@ -19,23 +19,8 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
         throw err;
     }
 
-    // add tokens to escape characters used during lex parse
-    const tokensWithEscapes = [
-        {
-            "name": "colon",
-            "pattern": "[:]"
-        },
-        {
-            "name": "openingSharpBrace",
-            "pattern": "[<]"
-        },
-        {
-            "name": "closingSharpBrace",
-            "pattern": "[>]"
-        }
-    ].concat(tokens)
     // add wildcard match against everything that was not parsed
-    .concat([
+    const tokensWithEscapes = tokens.concat([
         {
             "name": "invalid",
             "pattern": ".*|[\r\n]"
@@ -50,27 +35,21 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
 
         currentState = currentState.map(sequence => {
             if (typeof sequence == 'string') {
-                // replace with parsed out tokens
-                const parsedSequence = sequence.replace(new RegExp(`(${tokenType.pattern})`, 'g'), `<${tokenType.name}:$1>`);
-                console.log(parsedSequence);
-                return parsedSequence
-                // split on splits
-                .split(/><|>|</)
-                // drop empty strings
-                .filter(str => str !== '')
-                // replace with constructed token objects
-                .map(chunk => {
-                    // second group in match includes \r and \n because a dot does not match newline
-                    const match = chunk.match(/^(.*)\:(.*|[\r\n])$/);
-                    if (match) {
+                // split out with token regexes
+                return sequence.split(new RegExp(`(${tokenType.pattern})`, 'g'))
+                // construct token objects
+                .map((chunk, index, array) => {
+                    if (index % 2 == 1) {
                         return {
-                            type: match[1],
-                            text: match[2]
+                            type: tokenType.name,
+                            text: chunk
                         };
                     } else {
                         return chunk;
                     }
                 })
+                // drop empty strings
+                .filter(str => str !== '');
             } else {
                 return sequence;
             }

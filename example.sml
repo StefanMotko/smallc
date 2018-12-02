@@ -1,1 +1,1 @@
-BEGIN WRITE fff ( a ) fff ; END
+BEGIN WRITE < ( a ) > ; END
