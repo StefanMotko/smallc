@@ -36,10 +36,10 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
     ].concat(tokens)
     // add wildcard match against everything that was not parsed
     .concat([
-        // {
-        //     "name": "invalid",
-        //     "pattern": ".*"
-        // }
+        {
+            "name": "invalid",
+            "pattern": ".*"
+        }
     ]);
 
     // initialize lex state
