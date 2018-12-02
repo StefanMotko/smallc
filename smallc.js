@@ -38,7 +38,7 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
     .concat([
         {
             "name": "invalid",
-            "pattern": ".*"
+            "pattern": ".*|[\r\n]"
         }
     ]);
 
