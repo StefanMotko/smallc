@@ -45,10 +45,10 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
     // initialize lex state
     var currentState = [ input ];
 
-    tokensWithEscapes.forEach(tokenType => {
-
-        // construct regex
-        tokenType.regex = new RegExp(`(${tokenType.pattern})`, 'g');
+    tokensWithEscapes
+    // construct regex
+    .map(tokenType => Object.assign({ regex: new RegExp(`(${tokenType.pattern})`, 'g') }, tokenType ))
+    .forEach(tokenType => {
 
         currentState = currentState.map(sequence => {
             if (typeof sequence == 'string') {
