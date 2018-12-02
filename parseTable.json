@@ -1,0 +1,287 @@
+{
+    "symbols": {
+        "PROGRAM": {
+            "begin": [
+                "begin",
+                "STATEMENT_LIST",
+                "end"
+            ]
+        },
+        "STATEMENT_LIST": {
+            "read": [
+                "STATEMENT",
+                "STATEMENT_LIST2"
+            ],
+            "write": [
+                "STATEMENT",
+                "STATEMENT_LIST2"
+            ],
+            "if": [
+                "STATEMENT",
+                "STATEMENT_LIST2"
+            ],
+            "letter": [
+                "STATEMENT",
+                "STATEMENT_LIST2"
+            ]
+        },
+        "STATEMENT_LIST2": {
+            "end": [],
+            "read": [
+                "STATEMENT_LIST"
+            ],
+            "write": [
+                "STATEMENT_LIST"
+            ],
+            "if": [
+                "STATEMENT_LIST"
+            ],
+            "letter": [
+                "STATEMENT_LIST"
+            ]
+        },
+        "STATEMENT": {
+            "read": [
+                "read",
+                "openingBrace",
+                "ID_LIST",
+                "closingBrace",
+                "semicolon"
+            ],
+            "write": [
+                "write",
+                "openingBrace",
+                "EXPR_LIST",
+                "closingBrace",
+                "semicolon"
+            ],
+            "if": [
+                "if",
+                "BEXPR",
+                "then",
+                "STATEMENT",
+                "STATEMENT2"
+            ],
+            "letter": [
+                "IDENT",
+                "equals",
+                "EXPRESSION"
+            ]
+        },
+        "STATEMENT2": {
+            "semicolon": [
+                "semicolon"
+            ],
+            "else": [
+                "else",
+                "STATEMENT",
+                "semicolon"
+            ]
+        },
+        "ID_LIST": {
+            "letter": [
+                "IDENT",
+                "ID_LIST2"
+            ]
+        },
+        "ID_LIST2": {
+            "closingBrace": [],
+            "comma": [
+                "comma",
+                "ID_LIST"
+            ]
+        },
+        "EXPR_LIST": {
+            "openingBrace": [
+                "EXPRESSION",
+                "EXPR_LIST2"
+            ],
+            "plus": [
+                "EXPRESSION",
+                "EXPR_LIST2"
+            ],
+            "minus": [
+                "EXPRESSION",
+                "EXPR_LIST2"
+            ],
+            "letter": [
+                "EXPRESSION",
+                "EXPR_LIST2"
+            ]
+        },
+        "EXPR_LIST2": {
+            "closingBrace": [],
+            "comma": [
+                "comma",
+                "EXPR_LIST"
+            ]
+        },
+        "EXPRESSION": {
+            "openingBrace": [
+                "FACTOR",
+                "EXPRESSION2"
+            ],
+            "plus": [
+                "FACTOR",
+                "EXPRESSION2"
+            ],
+            "minus": [
+                "FACTOR",
+                "EXPRESSION2"
+            ],
+            "letter": [
+                "FACTOR",
+                "EXPRESSION2"
+            ]
+        },
+        "EXPRESSION2": {
+            "semicolon": [],
+            "closingBrace": [],
+            "comma": [],
+            "plus": [
+                "OP",
+                "FACTOR",
+                "EXPRESSION2"
+            ],
+            "minus": [
+                "OP",
+                "FACTOR",
+                "EXPRESSION2"
+            ]
+        },
+        "FACTOR": {
+            "openingBrace": [
+                "openingBrace",
+                "EXPRESSION",
+                "closingBrace"
+            ],
+            "plus": [
+                "NUMBER"
+            ],
+            "minus": [
+                "NUMBER"
+            ],
+            "letter": [
+                "IDENT"
+            ]
+        },
+        "BEXPR": {
+            "openingBrace": [
+                "BTERM",
+                "BEXPR2"
+            ],
+            "not": [
+                "BTERM",
+                "BEXPR2"
+            ],
+            "true": [
+                "BTERM",
+                "BEXPR2"
+            ],
+            "false": [
+                "BTERM",
+                "BEXPR2"
+            ]
+        },
+        "BEXPR2": {
+            "closingBrace": [],
+            "then": [],
+            "or": [
+                "or",
+                "BTERM",
+                "BEXPR2"
+            ]
+        },
+        "BTERM": {
+            "openingBrace": [
+                "BFACTOR",
+                "BTERM2"
+            ],
+            "not": [
+                "BFACTOR",
+                "BTERM2"
+            ],
+            "true": [
+                "BFACTOR",
+                "BTERM2"
+            ],
+            "false": [
+                "BFACTOR",
+                "BTERM2"
+            ]
+        },
+        "BTERM2": {
+            "closingBrace": [],
+            "then": [],
+            "or": [],
+            "and": [
+                "and",
+                "BFACTOR",
+                "BTERM2"
+            ]
+        },
+        "BFACTOR": {
+            "openingBrace": [
+                "openingBrace",
+                "BEXPR",
+                "closingBrace"
+            ],
+            "not": [
+                "not",
+                "BFACTOR"
+            ],
+            "true": [
+                "true"
+            ],
+            "false": [
+                "false"
+            ]
+        },
+        "IDENT": {
+            "letter": [
+                "letter",
+                "LETDIG"
+            ]
+        },
+        "LETDIG": {
+            "equals": [],
+            "semicolon": [],
+            "closingBrace": [],
+            "comma": [],
+            "plus": [],
+            "minus": [],
+            "digit": [
+                "digit",
+                "LETDIG"
+            ],
+            "letter": [
+                "letter",
+                "LETDIG"
+            ]
+        },
+        "NUMBER": {
+            "plus": [
+                "plus",
+                "digitNonZero",
+                "DIGITSTRING"
+            ],
+            "minus": [
+                "minus",
+                "digitNonZero",
+                "DIGITSTRING"
+            ]
+        },
+        "DIGITSTRING": {
+            "semicolon": [],
+            "closingBrace": [],
+            "comma": [],
+            "plus": [],
+            "minus": [],
+            "digit": [
+                "digit",
+                "DIGITSTRING"
+            ]
+        }
+    },
+    "startingSymbol": "PROGRAM"
+}

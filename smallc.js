@@ -32,7 +32,12 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
             "name": "closingSharpBrace",
             "pattern": "[>]"
         }
-    ].concat(tokens);
+    ].concat(tokens)
+    // add wildcard match against everything that was not parsed
+    .concat([
+        "name": "invalid",
+        "pattern": ".*"
+    ]);
 
     // initialize lex state
     var currentState = [ input ];
@@ -79,6 +84,7 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
 
     // now the lex is complete and we can go to syn
     const tokenStream = currentState;
+    const stack = [];
 
     tokenStream.forEach(token => {
         
