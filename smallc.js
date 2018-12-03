@@ -3,24 +3,26 @@ const fs = require('fs');
 const tokens = require('./tokens.json');
 const parseTable = require('./parseTable.json');
 
-if (process.argv.length != 3) {
-    console.log(`   smallc - SMALL language compiler
+if (process.argv.length != 3 && (process.argv.length != 4 || process.argv[2] != '--step')) {
+    console.log(`   smallc - SMALL language analyser
     Usage:
-        smallc <file>
+        smallc [--step] <file>
         
     <file>  file to compile`);
     // exit succesfully with no args, error on multiple args
     process.exit(process.argv.length == 2 ? 0 : 1);
 }
 
-fs.readFile(process.argv[2], 'utf8', (err, input) => {
+const step = process.argv.length == 4 && process.argv[2] == '--step';
+
+fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
 
     if (err) {
         throw err;
     }
 
     // add wildcard match against everything that was not parsed
-    const tokensWithEscapes = tokens.concat([
+    const tokensWithInvalid = tokens.concat([
         {
             "name": "invalid",
             "pattern": ".*|[\r\n]"
@@ -30,7 +32,7 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
     // initialize lex state
     var currentState = [ input ];
 
-    tokensWithEscapes
+    tokensWithInvalid
     .forEach(tokenType => {
 
         currentState = currentState.map(sequence => {
@@ -64,6 +66,10 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
         }, []);
     });
 
+    if (step) {
+        console.log(`Tokens: ${JSON.stringify(currentState)}`);
+    }
+
     // now the lex is complete and we can go to syn
     const tokenStream = currentState;
     const stack = [];
@@ -78,22 +84,35 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
     var error = false;
     var unexpectedText = '';
     tokenStream.forEach(token => {
+        if (step) {
+            console.log(`\nCurrent token: ${JSON.stringify(token)}`);
+        }
 
         if (parseTable.skipSymbols.indexOf(token.type) == -1 || panic) {
 
             var foundTerminal = false;
             while (!foundTerminal) {
+                if (step) {
+                    console.log(`Stack: ${JSON.stringify(stack)}`);
+                }
 
                 const top = stack[stack.length - 1];
 
                 if (top == token.type) {
                     foundTerminal = true;
+                    if (step) {
+                        console.log(`> Matched token ${JSON.stringify(top)} on top of stack`);
+                    }
+                    
                     stack.pop();
                 } else if (isTerminal(top)) {
                     // incorrect terminal
                     panic = true;
                     error = true;
                     unexpectedText = `${unexpectedText}${token.text}`;
+                    if (step) {
+                        console.log(`> Unexpected token ${JSON.stringify(token.text)}`);
+                    }
                     break;
                 } else {
                     const ruleResult = parseTable.symbols[top][token.type];
@@ -102,8 +121,12 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
                         panic = true;
                         error = true;
                         unexpectedText = `${unexpectedText}${token.text}`;
+                        if (step) {
+                            console.log(`> Unexpected token ${JSON.stringify(token.text)}`);
+                        }
                         break;
                     } else {
+                        console.log(`> Executing rule ${top} -> ${JSON.stringify(ruleResult)}`);
                         stack.pop();
                         stack.push(...ruleResult.reverse());
                     }
@@ -117,6 +140,8 @@ fs.readFile(process.argv[2], 'utf8', (err, input) => {
 
             }
 
+        } else if (step) {
+            console.log("Skipping token");
         }
 
     });
