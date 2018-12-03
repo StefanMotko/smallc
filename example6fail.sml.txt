@@ -1,0 +1,9 @@
+PROGRAM calculator;
+VAR
+   a, b, c : integer;
+BEGIN
+   a:= 2;
+   b:= 2;
+   c:= a+b;
+   WRITELN(5);
+END.
