@@ -1,0 +1,1 @@
+BEGIN a:=9; WRITE(a); END

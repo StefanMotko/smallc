@@ -1,0 +1,1 @@
+BEGIN a:==b; IF TRUE THEN a:=-a; a:=-a; ; WRITE(a b, c) END

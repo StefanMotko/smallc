@@ -1,1 +1,0 @@
-BEGIN WRITE < ( a ) >; END

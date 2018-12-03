@@ -1,0 +1,1 @@
+BEGIN READ ( b ); a := b + 5; END

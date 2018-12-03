@@ -1,0 +1,1 @@
+BEGIN IF TRUE THEN  IF FALSE THEN a:= - 10; ELSE READ(a0,b1,c2); ;ELSE WRITE(a, +9,  c +(-123)) ; ; END

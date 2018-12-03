@@ -1,0 +1,1 @@
+BEGIN READ(a) a:= a + 4; WRITE(a);

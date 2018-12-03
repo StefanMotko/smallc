@@ -1,0 +1,1 @@
+BEGIN READ(a, 9, b);; WRITE((a+5)b,c); END

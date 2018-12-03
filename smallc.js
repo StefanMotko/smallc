@@ -105,7 +105,7 @@ fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
                     }
                     
                     stack.pop();
-                } else if (isTerminal(top)) {
+                } else if (!top || isTerminal(top)) {
                     // incorrect terminal
                     panic = true;
                     error = true;
@@ -136,7 +136,7 @@ fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
                 }
                 
                 if (panic) {
-                    console.error(`Unexpected input: expected ${top} but found ${unexpectedText}`);
+                    console.error(`Unexpected input: expected ${top || 'EOF'} but found ${unexpectedText}`);
                     unexpectedText = '';
                     panic = false;
                 }
@@ -150,7 +150,7 @@ fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
     });
 
     if (panic) {
-        console.error(`Unexpected input: expected ${stack[stack.length - 1]} but found ${unexpectedText}`);
+        console.error(`Unexpected input: expected ${stack[stack.length - 1] || 'EOF'} but found ${unexpectedText}`);
         panic = false;
         unexpectedText = '';
     }
