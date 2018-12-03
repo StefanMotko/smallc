@@ -1,0 +1,9 @@
+BEGIN
+READ ( a , b, ba , ba002 , a0b1 ) ;
+IF TRUE AND ( NOT TRUE OR NOT FALSE ) OR ( NOT FALSE ) OR FALSE
+THEN 
+  ab := a + ( b - ba ) + 10 - 190 ;
+ELSE 
+  WRITE ( a0b1 , 199 , - 100 + ( 9 ) + 1 - 10 , ( ( ( ( 1 - a ) ) ) ) , b - ( 1 - 1 ) ) ;
+;
+END

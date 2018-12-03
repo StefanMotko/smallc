@@ -64,8 +64,9 @@
             ],
             "letter": [
                 "IDENT",
-                "equals",
-                "EXPRESSION"
+                "assignment",
+                "EXPRESSION",
+                "semicolon"
             ]
         },
         "STATEMENT2": {
@@ -107,6 +108,10 @@
             "letter": [
                 "EXPRESSION",
                 "EXPR_LIST2"
+            ],
+            "digitNonZero": [
+                "EXPRESSION",
+                "EXPR_LIST2"
             ]
         },
         "EXPR_LIST2": {
@@ -130,6 +135,10 @@
                 "EXPRESSION2"
             ],
             "letter": [
+                "FACTOR",
+                "EXPRESSION2"
+            ],
+            "digitNonZero": [
                 "FACTOR",
                 "EXPRESSION2"
             ]
@@ -159,6 +168,9 @@
                 "NUMBER"
             ],
             "minus": [
+                "NUMBER"
+            ],
+            "digitNonZero": [
                 "NUMBER"
             ],
             "letter": [
@@ -244,14 +256,18 @@
             ]
         },
         "LETDIG": {
-            "equals": [],
+            "assignment": [],
             "semicolon": [],
             "closingBrace": [],
             "comma": [],
             "plus": [],
             "minus": [],
-            "digit": [
-                "digit",
+            "digitNonZero": [
+                "DIGIT",
+                "LETDIG"
+            ],
+            "digitZero": [
+                "DIGIT",
                 "LETDIG"
             ],
             "letter": [
@@ -269,6 +285,10 @@
                 "minus",
                 "digitNonZero",
                 "DIGITSTRING"
+            ],
+            "digitNonZero": [
+                "digitNonZero",
+                "DIGITSTRING"
             ]
         },
         "DIGITSTRING": {
@@ -277,9 +297,29 @@
             "comma": [],
             "plus": [],
             "minus": [],
-            "digit": [
-                "digit",
+            "digitNonZero": [
+                "DIGIT",
                 "DIGITSTRING"
+            ],
+            "digitZero": [
+                "DIGIT",
+                "DIGITSTRING"
+            ]
+        },
+        "DIGIT": {
+            "digitNonZero": [
+                "digitNonZero"
+            ],
+            "digitZero": [
+                "digitZero"
+            ]
+        },
+        "OP": {
+            "plus": [
+                "plus"
+            ],
+            "minus": [
+                "minus"
             ]
         }
     },

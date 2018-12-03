@@ -131,7 +131,7 @@ fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
                         }
                         
                         stack.pop();
-                        stack.push(...ruleResult.reverse());
+                        stack.push(...([].concat(ruleResult).reverse()));
                     }
                 }
                 
@@ -150,7 +150,7 @@ fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
     });
 
     if (panic) {
-        console.error(`Unexpected input: expected ${top} but found ${unexpectedText}`);
+        console.error(`Unexpected input: expected ${stack[stack.length - 1]} but found ${unexpectedText}`);
         panic = false;
         unexpectedText = '';
     }
