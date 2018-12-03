@@ -126,7 +126,10 @@ fs.readFile(process.argv[process.argv.length - 1], 'utf8', (err, input) => {
                         }
                         break;
                     } else {
-                        console.log(`> Executing rule ${top} -> ${JSON.stringify(ruleResult)}`);
+                        if (step) {
+                            console.log(`> Executing rule ${top} -> ${JSON.stringify(ruleResult)}`);
+                        }
+                        
                         stack.pop();
                         stack.push(...ruleResult.reverse());
                     }
